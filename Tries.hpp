@@ -36,7 +36,7 @@ class tries
         return root;
     }
 
-    void insert(std::string input)
+    void insert(std::string &input)
     {
         if (!root)
             root =  create_node();
@@ -60,8 +60,77 @@ class tries
         return;
     }
 
+    bool search(std::string &word)
+    {
+        if (!root)
+            return false;
+
+        tree_node *current_room = root;
+        int i = 0;
+        char c ;
+
+        for (; i < word.size(); i++)
+        {
+            c = word[i];
+            if (!isalpha(c))
+                    throw std::runtime_error("Error: Input is not an alphabet letter.");
+            c = tolower(c);
+            int index = c - 'a';
+            if (current_room->neighbours[index])
+                current_room = current_room->neighbours[index];
+            else 
+                return false;
+        }
+        return current_room.isWord;
+    }
+
+    bool startwith(std::string &word)
+    {
+           if (!root)
+            return false;
+
+        tree_node *current_room = root;
+        int i = 0;
+        char c ;
+        for (; i < word.size(); i++)
+        {
+            c = word[i];
+            if (!isalpha(c))
+                    throw std::runtime_error("Error: Input is not an alphabet letter.");
+            c = tolower(c);
+            int index = c - 'a';
+            if (current_room->neighbours[index])
+                current_room = current_room->neighbours[index];
+            else 
+                return false;
+        }
+        return true;
+    }
 
 
+    void cleaning(tree **croot , int index = 0)
+    {
+        int i = 0;
+
+        if (croot == NULL || index == 26)
+            return;
+
+        if (*croot.neighbours[index])
+        {
+            *croot = croot->neighbours[index];
+            cleaning(croot , index);
+            delete croot->neighbours[index];
+        }
+        else 
+            cleaning(index + 1);
+        delete(croot);
+    }
+
+
+    ~tries()
+    {
+
+    }
 
 };
 
