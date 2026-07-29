@@ -120,7 +120,10 @@ class tries
         cleaning(croot, index + 1);
 
     }
-    void remove(std::string &word, tree_node *head int startIndex)
+
+
+    
+    void    remove(std::string &word, tree_node *head, int startIndex)
     {
         int index = 0; 
         char c ;
@@ -129,32 +132,38 @@ class tries
 
         if (word.empty())
             return ;
-        for (; startIndex < word.size(); startIndex++)
-        {
-            c = word[startIndex];
-            check_char(c);
-            index = c - 'a';
 
-            if (curr->neighbours[index] != NULL)
-               remove(word, curr->neighbours[index], startIndex);
+        c = word[startIndex];
+        check_char(c);
+
+        index = c - 'a';
+
+        if (curr->neighbours[index] != NULL)
+        {
+            if (startIndex == word.size() - 1)
+                curr->neighbours[index]->isWord = false;
+            remove(word, curr->neighbours[index], startIndex + 1);
+
+            for (int i = 0 ; i < 26 ; i++)
+            {   
+                if (count >= 1)
+                 break;
+                if (curr->neighbours[index] && curr->neighbours[index]->neighbours[i] != NULL)
+                    count++;        
+            }
+
+            if (count >= 1)
+                return ;
+            else
+            {
+                delete curr->neighbours[index];
+                curr->neighbours[index] = NULL;
+                return ;
+            }
         }
 
-        for (int i = 0 ; i < 26 ; i++)
-        {
-            if (count > 1)
-                break;
-            if (curr->neighbours[i] != NULL)
-                count++;
-        }
-        if (count > 0)
-            curr->word = false;
-        else 
-        {
-            if 
-            delete curr->neighbours[index];
-            curr->neighbours[index] = NULL;
-            remove(word);
-        }
+        return ;
+        
     }
 
     
