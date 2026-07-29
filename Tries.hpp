@@ -72,9 +72,7 @@ class tries
         for (; i < word.size(); i++)
         {
             c = word[i];
-            if (!isalpha(c))
-                    throw std::runtime_error("Error: Input is not an alphabet letter.");
-            c = tolower(c);
+            check_char(c);
             int index = c - 'a';
             if (current_room->neighbours[index])
                 current_room = current_room->neighbours[index];
@@ -95,9 +93,7 @@ class tries
         for (; i < word.size(); i++)
         {
             c = word[i];
-            if (!isalpha(c))
-                    throw std::runtime_error("Error: Input is not an alphabet letter.");
-            c = tolower(c);
+            check_char(c);
             int index = c - 'a';
             if (current_room->neighbours[index])
                 current_room = current_room->neighbours[index];
@@ -124,11 +120,56 @@ class tries
         cleaning(croot, index + 1);
 
     }
+    void remove(std::string &word, tree_node *head int startIndex)
+    {
+        int index = 0; 
+        char c ;
+        tree_node *curr = head;
+        int count = 0;
 
+        if (word.empty())
+            return ;
+        for (; startIndex < word.size(); startIndex++)
+        {
+            c = word[startIndex];
+            check_char(c);
+            index = c - 'a';
 
+            if (curr->neighbours[index] != NULL)
+               remove(word, curr->neighbours[index], startIndex);
+        }
+
+        for (int i = 0 ; i < 26 ; i++)
+        {
+            if (count > 1)
+                break;
+            if (curr->neighbours[i] != NULL)
+                count++;
+        }
+        if (count > 0)
+            curr->word = false;
+        else 
+        {
+            if 
+            delete curr->neighbours[index];
+            curr->neighbours[index] = NULL;
+            remove(word);
+        }
+    }
+
+    
     ~tries()
     {
+        cleaning(root , 0);
+        delete root;
+        root = NULL;
+    }
 
+    bool check_char(char &c)
+    {
+        if (!isalpha(c))
+                    throw std::runtime_error("Error: Input is not an alphabet letter.");
+        c = tolower(c);
     }
 
 };
