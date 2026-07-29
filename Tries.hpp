@@ -108,22 +108,21 @@ class tries
     }
 
 
-    void cleaning(tree **croot , int index = 0)
+    void cleaning(tree_node *current , int index = 0)
     {
         int i = 0;
+        tree_node *croot = current ;
 
         if (croot == NULL || index == 26)
             return;
 
-        if (*croot.neighbours[index])
+        if (croot.neighbours[index])
         {
-            *croot = croot->neighbours[index];
-            cleaning(croot , index);
+            cleaning(croot->neighbours[index], 0);
             delete croot->neighbours[index];
         }
-        else 
-            cleaning(index + 1);
-        delete(croot);
+        cleaning(croot, index + 1);
+
     }
 
 
