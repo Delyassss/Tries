@@ -123,7 +123,7 @@ class tries
 
 
     
-    void    remove(std::string &word, tree_node *head, int startIndex)
+    bool    remove(std::string &word, tree_node *head, int startIndex)
     {
         int index = 0; 
         char c ;
@@ -131,39 +131,33 @@ class tries
         int count = 0;
 
         if (word.empty())
-            return ;
+            return false;
+
+        if (startIndex == word.size())
+        {
+            curr->isWord = false;
+            if (has_neighbours(curr))
+                return false;
+            else
+                return true;
+        }
 
         c = word[startIndex];
         check_char(c);
-
         index = c - 'a';
 
         if (curr->neighbours[index] != NULL)
         {
-            if (startIndex == word.size() - 1)
-                curr->neighbours[index]->isWord = false;
-            remove(word, curr->neighbours[index], startIndex + 1);
-
-            for (int i = 0 ; i < 26 ; i++)
-            {   
-                if (count >= 1)
-                 break;
-                if (curr->neighbours[index] && curr->neighbours[index]->neighbours[i] != NULL)
-                    count++;        
-            }
-
-            if (count >= 1)
-                return ;
-            else
-            {
-                delete curr->neighbours[index];
+            bool status = remove(word, curr->neighbours[index], startIndex + 1);
+            if (status)
+            {  delete curr->neighbours[index];
                 curr->neighbours[index] = NULL;
-                return ;
             }
+            if (has_neighbours(curr) || curr->isWord)
+                return false;
+            return true;
         }
-
-        return ;
-        
+        return false;
     }
 
     
@@ -180,6 +174,22 @@ class tries
                     throw std::runtime_error("Error: Input is not an alphabet letter.");
         c = tolower(c);
     }
+
+    bool has_neighbours(tree_node *head)
+    {
+        int count  = 0;
+        tree_node *curr = head ;
+
+        for (int i = 0 ; i < 26 ; i++)
+        {   
+            if (count >= 1)
+             return true;
+            if (curr && curr->neighbours[i] != NULL)
+                count++;        
+        }
+        return false;
+    }
+
 
 };
 
