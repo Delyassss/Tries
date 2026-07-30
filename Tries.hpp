@@ -10,9 +10,6 @@
 
 #define MAX_CHARS 256
 
-typedef unordered_map<char, tree_node> Tree;
-
-
 
 typedef struct node
 {
@@ -24,19 +21,29 @@ typedef struct node
 class tries 
 {
     
-   struct  tree_node *root;
-   Tree head;
+    tree_node *root;
     
     public :
+
+        tries()
+        {
+            root = NULL;
+        }
+        tries(std::string &input)
+        {
+            root = create_node();
+            insert(input);
+        }
+
 
     tree_node *create_node()
     {
         root = new tree_node();
-        bzero(&root.neighbours, sizeof(tree_node *) * 26);
+        memset(root->neighbours , 0 , sizeof(tree_node *) * 26);
         return root;
     }
 
-    void insert(std::string &input)
+    void insert(const std::string &input)
     {
         if (!root)
             root =  create_node();
@@ -56,11 +63,11 @@ class tries
 
                 current_room = current_room->neighbours[index];
         }
-            current_room.isWord = true;
+            current_room->isWord = true;
         return;
     }
 
-    bool search(std::string &word)
+    bool search(const std::string &word)
     {
         if (!root)
             return false;
@@ -79,10 +86,10 @@ class tries
             else 
                 return false;
         }
-        return current_room.isWord;
+        return current_room->isWord;
     }
 
-    bool startwith(std::string &word)
+    bool startwith(const std::string &word)
     {
            if (!root)
             return false;
@@ -112,7 +119,7 @@ class tries
         if (croot == NULL || index == 26)
             return;
 
-        if (croot.neighbours[index])
+        if (croot->neighbours[index])
         {
             cleaning(croot->neighbours[index], 0);
             delete croot->neighbours[index];
@@ -123,7 +130,7 @@ class tries
 
 
     
-    bool    remove(std::string &word, tree_node *head, int startIndex)
+    bool    remove(const std::string &word, tree_node *head, int startIndex)
     {
         int index = 0; 
         char c ;
@@ -168,7 +175,7 @@ class tries
         root = NULL;
     }
 
-    bool check_char(char &c)
+    bool check_char(const char &c)
     {
         if (!isalpha(c))
                     throw std::runtime_error("Error: Input is not an alphabet letter.");
@@ -189,6 +196,11 @@ class tries
         }
         return false;
     }
+    tree_node *&get_root()
+    {
+        return root;
+    }
+
 
 
 };
