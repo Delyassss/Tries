@@ -14,7 +14,9 @@ int main()
 
     for (std::string str : strs)
         t.insert(str);
-    std::string s = s;
+    
+    std::string s = "ilyass";
+
     if (t.search(s) == false)
         std::cout << s << " is Not a word in our database" << std::endl;
     else
@@ -30,9 +32,6 @@ int main()
         std::cout << s << " is been removed from our database" << std::endl;
 
     return 0;
-
-    
-
 
 
 

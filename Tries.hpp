@@ -54,9 +54,9 @@ class tries
          {
             if (!isalpha(input[i]))
                     throw std::runtime_error("Error: Input is not an alphabet letter.");
+            char c  = tolower(input[i]);
             int index = input[i] - 'a';
 
-            input[i] = tolower(input[i]);
                 
             if (current_room->neighbours[index] == NULL)
                 current_room->neighbours[index] = create_node();
@@ -175,11 +175,12 @@ class tries
         root = NULL;
     }
 
-    bool check_char(const char &c)
+    bool check_char(char &c)
     {
         if (!isalpha(c))
                     throw std::runtime_error("Error: Input is not an alphabet letter.");
         c = tolower(c);
+        return true;
     }
 
     bool has_neighbours(tree_node *head)
