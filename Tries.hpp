@@ -31,22 +31,22 @@ class tries
         }
         tries(std::string &input)
         {
-            root = create_node();
+            root = create_node(&root);
             insert(input);
         }
 
 
-    tree_node *create_node()
+    tree_node *create_node(tree_node **bloc)
     {
-        root = new tree_node();
-        memset(root->neighbours , 0 , sizeof(tree_node *) * 26);
-        return root;
+        *bloc = new tree_node();
+        memset((*bloc)->neighbours, 0 , sizeof(tree_node *) * 26);
+        return *bloc;
     }
 
     void insert(const std::string &input)
     {
         if (!root)
-            root =  create_node();
+            root =  create_node(&root);
 
         tree_node* current_room = root;
             
@@ -59,7 +59,7 @@ class tries
 
                 
             if (current_room->neighbours[index] == NULL)
-                current_room->neighbours[index] = create_node();
+                current_room->neighbours[index] = create_node(&current_room->neighbours[index]);
 
                 current_room = current_room->neighbours[index];
         }
